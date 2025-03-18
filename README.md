@@ -13,6 +13,10 @@ This is a simple Nginx-based application designed for testing Active Directory p
 
 ### Ubuntu/Debian
 ```bash
+# Install Git
+sudo apt-get update
+sudo apt-get install -y git
+
 # Install Docker
 sudo apt-get update
 sudo apt-get install -y ca-certificates curl gnupg
@@ -28,12 +32,18 @@ echo \
 sudo apt-get update
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
+# Install Docker Compose (if not included with plugin)
+DOCKER_COMPOSE_VERSION="1.29.2"  # You can change this to the latest stable version
+curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+
 # Add your user to docker group (logout and login required after this)
 sudo usermod -aG docker $USER
 
 # Verify installation
 docker --version
 docker compose version
+git --version
 ```
 
 ### macOS
