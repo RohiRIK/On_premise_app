@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>On-Premise Test Application</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .info-box {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>On-Premise Test Application</h1>
+        
+        <div class="info-box">
+            <h2>Server Information</h2>
+            <p><strong>Hostname:</strong> <span id="hostname">Loading...</span></p>
+            <p><strong>IP Address:</strong> <span id="ip">Loading...</span></p>
+            <p><strong>User Agent:</strong> <span id="useragent">Loading...</span></p>
+        </div>
+
+        <div class="info-box">
+            <h2>Authentication Status</h2>
+            <p><strong>User ID:</strong> <span id="userid">Loading...</span></p>
+            <p><strong>Authentication Method:</strong> <span id="authmethod">Loading...</span></p>
+        </div>
+
+        <div class="info-box">
+            <h2>Request Headers</h2>
+            <pre id="headers">Loading...</pre>
+        </div>
+    </div>
+
+    <script>
+        // Display user agent
+        document.getElementById('useragent').textContent = navigator.userAgent;
+
+        // Fetch and display headers
+        fetch('/')
+            .then(response => {
+                document.getElementById('hostname').textContent = window.location.hostname;
+                document.getElementById('ip').textContent = response.headers.get('X-Client-IP') || 'Not available';
+                document.getElementById('userid').textContent = response.headers.get('X-User-ID') || 'Not authenticated';
+                document.getElementById('authmethod').textContent = response.headers.get('X-Auth-Method') || 'None';
+                
+                // Display all headers
+                let headerText = '';
+                for (let [key, value] of response.headers) {
+                    headerText += `${key}: ${value}\n`;
+                }
+                document.getElementById('headers').textContent = headerText;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    </script>
+</body>
+</html> 
